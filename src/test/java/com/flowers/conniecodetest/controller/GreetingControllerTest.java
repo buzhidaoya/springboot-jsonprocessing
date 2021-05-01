@@ -29,26 +29,20 @@ public class GreetingControllerTest {
     }
 
     @Test
-    void greeting() throws Exception {
+    void getGreeting() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/greeting").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn();
+    }
+
+
+
+    @Test
+    void testGreeting() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/greeting").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(Matchers.equalTo("Hello Spring Boot, Connie is trying to build.")));
     }
-
-//
-//        @Test
-//        public void getGreeting() throws Exception {
-//            mockMvc.perform(MockMvcRequestBuilders.get("/greeting").accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk())
-//                    .andDo(MockMvcResultHandlers.print())
-//                    .andReturn();
-//        }
-//
-//        @Test
-//        public void testGreeting() throws Exception {
-//            mockMvc.perform(MockMvcRequestBuilders.get("/greeting").accept(MediaType.APPLICATION_JSON))
-//                    .andExpect(status().isOk())
-//                    .andExpect(content().string(Matchers.equalTo("Hello Spring Boot, Connie is trying to build.")));
-//        }
 
 }

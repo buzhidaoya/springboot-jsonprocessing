@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flowers.conniecodetest.model.Entries;
 import com.flowers.conniecodetest.model.Entry;
 import com.flowers.conniecodetest.service.EntryService;
 import com.flowers.conniecodetest.service.EntryServiceImpl;
@@ -31,19 +32,23 @@ public class JsonController {
     @Autowired
     ObjectMapper mapper;
 
+    Entries entryList = new Entries();
+
     @RequestMapping("/newentry")
     public Entry newEntry() {
         // TO DO: Use hashmap to store and represent.
         return new Entry(1000, 200, "Title", "What's in the body? Product review?");
     }
 
-    @RequestMapping(value = "jsontoobject", method = GET, produces = "application/json")
-    public Entry[] jsonToObject() {
+    @RequestMapping(value = "/", method = GET, produces = "application/json")
+    public ResponseEntity<String> jsonToObject() {
         try {
             mapper = new ObjectMapper();
-            File file = new File("/Users/xiaochengjiang/Documents/自学/conniecodetest/src/main/java/com/flowers/conniecodetest/entries.json");
+            File file = new File("/Users/xiaochengjiang/Documents/自学/springboot-jsonprocessing/src/main/java/com/flowers/conniecodetest/entriesJSON.json");
             Entry[] entry = mapper.readValue(file, Entry[].class);
-            return entry;
+            entryList.setEntries(Arrays.asList(entry));
+//            return entryList;
+            return new ResponseEntity<>("Success!", HttpStatus.OK);
         } catch (JsonParseException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -51,54 +56,58 @@ public class JsonController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+//        return null;
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "countuser", method = GET, produces = "application/json")
     public ResponseEntity<Integer> countuser() {
-        try {
+//        try {
             // TO DO: Use list for now. Can change to hashmap. Will do caching later.
-            mapper = new ObjectMapper();
-            JavaType type = mapper.getTypeFactory().constructParametricType(Collection.class, Entry.class);
-            Collection<Entry> list = mapper.readValue(
-                    new File("/Users/xiaochengjiang/Documents/自学/conniecodetest/src/main/java/com/flowers/conniecodetest/entries.json"),
-                    type);
+//            mapper = new ObjectMapper();
+//            JavaType type = mapper.getTypeFactory().constructParametricType(Collection.class, Entry.class);
+//            Collection<Entry> list = mapper.readValue(
+//                    new File("/Users/xiaochengjiang/Documents/自学/conniecodetest/src/main/java/com/flowers/conniecodetest/entriesJSON.json"),
+//                    type);
             int count = 0;
             Set<Integer> uniqueUserId = new HashSet<>();
-            for (Entry entry : list) {
+            for (Entry entry : entryList.getEntries()) {
                 if (uniqueUserId.add(entry.getUserId())) {
                     count++;
                 }
             }
             return new ResponseEntity<>(count, HttpStatus.OK);
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } catch (JsonParseException e) {
+//            e.printStackTrace();
+//        } catch (JsonMappingException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "update/{id}", produces = "application/json")
     public Entry update(@PathVariable int id) {
         // TO DO: Currently use a list. Will try a hashmap instead when it works. Will do caching later.
-        try {
-            mapper = new ObjectMapper();
-            File file = new File("/Users/xiaochengjiang/Documents/自学/conniecodetest/src/main/java/com/flowers/conniecodetest/entries.json");
-            Entry[] entry = mapper.readValue(file, Entry[].class);
-            Entry entryWithId = entry[id - 1];
+//        try {
+//            mapper = new ObjectMapper();
+//            File file = new File("/Users/xiaochengjiang/Documents/自学/conniecodetest/src/main/java/com/flowers/conniecodetest/entriesJSON.json");
+//            Entry[] entry = mapper.readValue(file, Entry[].class);
+//            Entry entryWithId = entry[id - 1];
+        Entry entryWithId = entryList.getEntries().get(id - 1);
+        if (id == 4) {
             entryWithId.setTitle("1800Flowers");
             entryWithId.setBody("1800Flowers");
-            return entryWithId;
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return new Entry();
+        return entryWithId;
+//        } catch (JsonParseException e) {
+//            e.printStackTrace();
+//        } catch (JsonMappingException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return new Entry();
     }
 }
