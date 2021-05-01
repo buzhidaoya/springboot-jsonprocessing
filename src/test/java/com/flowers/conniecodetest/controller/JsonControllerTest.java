@@ -29,12 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class JsonControllerTest {
 
-//    private MockMvc mockMvc;
-
-//    @BeforeEach
-//    void setUp() throws Exception {
-//        mockMvc = MockMvcBuilders.standaloneSetup(new JsonController()).build();
-//    }
+    private
 
     @Test
     void testGetStringjsonToObject() {
@@ -58,10 +53,10 @@ public class JsonControllerTest {
     }
 
     @Test
-    void update() throws Exception {
-//        mockMvc.perform(get("/update/4"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.person.name").value("Jason"));
+    void updateEntryTest() throws Exception {
+        Entry expectedEntry = new Entry(2, 12, "in quibusdam tempore odit est dolorem",
+                "itaque id aut magnam\npraesentium quia et ea odit et ea voluptas et\nsapiente quia nihil amet " +
+                        "occaecati quia id voluptatem\nincidunt ea est distinctio odio");
+//        when()
     }
 }

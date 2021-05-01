@@ -10,4 +10,5 @@ public interface EntryService {
     abstract void createEntry(Entry entry);
     abstract void updateEntry(int id, int userId, String title, String body);
     abstract Collection<Entry> getEntry();
+    abstract Entry findById(int id);
 }

@@ -39,4 +39,10 @@ public class EntryServiceImpl implements EntryService {
     public Collection<Entry> getEntry() {
         return entryMap.values();
     }
+
+    @Override
+    public Entry findById(int id) {
+        if (!entryMap.containsKey(id)) return null;
+        return entryMap.get(id);
+    }
 }
